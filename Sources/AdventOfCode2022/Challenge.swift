@@ -8,8 +8,14 @@ public protocol Challenge {
 extension String {
 	func parseLinesToInts() -> [Int] {
 		return self
-			.split(separator: "\n")
+			.split(separator: "\n", maxSplits: .max, omittingEmptySubsequences: false)
 			.map({ Int($0)! })
+	}
+	
+	func parseLinesToIntsOptional() -> [Int?] {
+		return self
+			.split(separator: "\n", maxSplits: .max, omittingEmptySubsequences: false)
+			.map({ Int($0) })
 	}
 }
 
