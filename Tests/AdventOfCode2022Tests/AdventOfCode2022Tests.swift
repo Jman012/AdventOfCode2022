@@ -39,7 +39,6 @@ final class Day01Tests: XCTestCase {
 		XCTAssertEqual(day.solvePart1(input: input.inputExample1), "24000")
 	}
 	func testPart1Real() throws {
-//		print(day.solvePart1(input: input.inputMain1))
 		measure(metrics: metrics, block: {
 			XCTAssertEqual(day.solvePart1(input: input.inputPart1), "74394")
 		})
@@ -48,9 +47,29 @@ final class Day01Tests: XCTestCase {
 		XCTAssertEqual(day.solvePart2(input: input.inputExample2), "45000")
 	}
 	func testPart2Real() throws {
-//		print(day.solvePart2(input: input.inputMain2))
 		measure(metrics: metrics, block: {
 			XCTAssertEqual(day.solvePart2(input: input.inputPart2), "212836")
+		})
+	}
+}
+
+final class Day02Tests: XCTestCase {
+	var day: Challenge { Day02() }
+	var input: Input { Input(day: 2) }
+	func testPart1Example() throws {
+		XCTAssertEqual(day.solvePart1(input: input.inputExample1), "15")
+	}
+	func testPart1Real() throws {
+		measure(metrics: metrics, block: {
+			XCTAssertEqual(day.solvePart1(input: input.inputPart1), "11767")
+		})
+	}
+	func testPart2Example() throws {
+		XCTAssertEqual(day.solvePart2(input: input.inputExample2), "12")
+	}
+	func testPart2Real() throws {
+		measure(metrics: metrics, block: {
+			XCTAssertEqual(day.solvePart2(input: input.inputPart2), "13886")
 		})
 	}
 }
