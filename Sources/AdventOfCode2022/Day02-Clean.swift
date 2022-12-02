@@ -18,7 +18,7 @@ public struct Day02Clean: Challenge {
 			}
 		}
 		
-		func baseScore() -> Int {
+		var score: Int {
 			switch self {
 			case .rock: return 1
 			case .paper: return 2
@@ -26,7 +26,7 @@ public struct Day02Clean: Challenge {
 			}
 		}
 		
-		func beats() -> Play {
+		var beats: Play {
 			switch self {
 			case .rock: return .scissors
 			case .paper: return .rock
@@ -34,7 +34,7 @@ public struct Day02Clean: Challenge {
 			}
 		}
 		
-		func isBeatBy() -> Play {
+		var isBeatBy: Play {
 			switch self {
 			case .rock: return .paper
 			case .paper: return .scissors
@@ -43,9 +43,9 @@ public struct Day02Clean: Challenge {
 		}
 		
 		func playAgainst(_ play: Play) -> Scenario {
-			if self.beats() == play {
+			if self.beats == play {
 				return .win
-			} else if self.isBeatBy() == play {
+			} else if self.isBeatBy == play {
 				return .lose
 			} else { // self == play
 				return .tie
@@ -54,9 +54,9 @@ public struct Day02Clean: Challenge {
 		
 		func reverse(scenario: Scenario) -> Play {
 			switch scenario {
-			case .lose: return self.beats()
+			case .lose: return self.beats
 			case .tie: return self
-			case .win: return self.isBeatBy()
+			case .win: return self.isBeatBy
 			}
 		}
 	}
@@ -75,7 +75,7 @@ public struct Day02Clean: Challenge {
 			}
 		}
 		
-		func baseScore() -> Int {
+		var score: Int {
 			switch self {
 			case .lose: return 0
 			case .tie: return 3
@@ -90,7 +90,7 @@ public struct Day02Clean: Challenge {
 			let plays = game.split(separator: " ")
 			let theirPlay = Play(from: plays[0])
 			let ourPlay = Play(from: plays[1])
-			let score = ourPlay.baseScore() + ourPlay.playAgainst(theirPlay).baseScore()
+			let score = ourPlay.score + ourPlay.playAgainst(theirPlay).score
 			return score
 		})
 		return "\(scores.reduce(0, +))"
@@ -103,7 +103,7 @@ public struct Day02Clean: Challenge {
 			let theirPlay = Play(from: plays[0])
 			let scenario = Scenario(from: plays[1])
 			let ourPlay = theirPlay.reverse(scenario: scenario)
-			let score = ourPlay.baseScore() + scenario.baseScore()
+			let score = ourPlay.score + scenario.score
 			return score
 		})
 		return "\(scores.reduce(0, +))"
