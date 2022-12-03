@@ -2,7 +2,7 @@ import Foundation
 
 fileprivate extension Character {
 	var score: Int {
-		if self >= "a" && self <= "z" {
+		if self.isLowercase {
 			return Int(self.asciiValue! - Character("a").asciiValue! + 1)
 		} else {
 			return Int(self.asciiValue! - Character("A").asciiValue! + 27)
