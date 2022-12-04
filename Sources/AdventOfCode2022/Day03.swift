@@ -17,8 +17,8 @@ public struct Day03: Challenge {
 	public func solvePart1(input: String) -> String {
 		let rucksacks = input.split(separator: "\n")
 		let scores = rucksacks.map({ rucksack in
-			let comp1 = Set<Character>(rucksack[rucksack.startIndex..<rucksack.index(rucksack.startIndex, offsetBy: rucksack.count/2)])
-			let comp2 = Set<Character>(rucksack[rucksack.index(rucksack.startIndex, offsetBy: rucksack.count/2)..<rucksack.endIndex])
+			let comp1 = Set<Character>(rucksack.prefix(rucksack.count/2))
+			let comp2 = Set<Character>(rucksack.suffix(rucksack.count/2))
 			let inCommon = comp1.intersection(comp2)
 			let firstInCommon = inCommon.first!
 			return firstInCommon.score
