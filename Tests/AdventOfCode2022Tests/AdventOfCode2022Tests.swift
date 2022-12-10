@@ -356,3 +356,44 @@ final class Day09Tests: XCTestCase {
 		}
 	}
 }
+
+final class Day10Tests: XCTestCase {
+	var day: Challenge { Day10() }
+	var input: Input { Input(day: 10) }
+	func testPart1Example() throws {
+		XCTAssertEqual(day.solvePart1(input: input.inputExample1), "13140")
+	}
+	func testPart1Real() throws {
+		XCTAssertEqual(day.solvePart1(input: input.inputPart1), "14720")
+		if doMeasure {
+			measure(metrics: metrics, block: {
+				_ = day.solvePart1(input: input.inputPart1)
+			})
+		}
+	}
+	func testPart2Example() throws {
+		XCTAssertEqual(day.solvePart2(input: input.inputExample2), #"""
+##..##..##..##..##..##..##..##..##..##..
+###...###...###...###...###...###...###.
+####....####....####....####....####....
+#####.....#####.....#####.....#####.....
+######......######......######......####
+#######.......#######.......#######.....
+"""#)
+	}
+	func testPart2Real() throws {
+		XCTAssertEqual(day.solvePart2(input: input.inputPart2), #"""
+####.####.###..###..###..####.####.####.
+#.......#.#..#.#..#.#..#.#.......#.#....
+###....#..###..#..#.###..###....#..###..
+#.....#...#..#.###..#..#.#.....#...#....
+#....#....#..#.#....#..#.#....#....#....
+#....####.###..#....###..#....####.#....
+"""#)
+		if doMeasure {
+			measure(metrics: metrics, block: {
+				_ = day.solvePart2(input: input.inputPart2)
+			})
+		}
+	}
+}
