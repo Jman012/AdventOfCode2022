@@ -4,44 +4,6 @@ public struct Day11: Challenge {
 	
 	public init() {}
 	
-	struct Worry {
-		let value: Int64
-		let factors: [Int64]
-		let factorsCounts: [Int64: Int64]
-		
-		func add(operand: Int64) -> Worry {
-			let newValue = value + operand
-			return optimize(newValue: newValue, factorsCounts: factorsCounts)
-		}
-		
-		func mult(operand: Int64) -> Worry {
-			let newValue = value * operand
-			return optimize(newValue: newValue, factorsCounts: factorsCounts)
-		}
-		
-		func optimize(newValue: Int64, factorsCounts: [Int64: Int64]) -> Worry {
-			var newNewValue = newValue
-			var newFactorCounts = factorsCounts
-			for factor in factors {
-				if newNewValue % factor == 0 {
-					newNewValue /= factor
-					newFactorCounts[factor] = (newFactorCounts[factor] ?? 0) + Int64(1)
-				}
-			}
-			return Worry(value: newNewValue, factors: factors, factorsCounts: newFactorCounts)
-		}
-		
-		func mult(operand: Worry) -> Worry {
-			let newValue = value * operand.value
-			return optimize(newValue: newValue, factorsCounts: factorsCounts.merging(operand.factorsCounts, uniquingKeysWith: +))
-		}
-		
-		func isDivisible(by: Int64) -> Bool {
-			return factorsCounts[by]! > 0
-		}
-		
-	}
-	
 	enum Operator {
 		case add
 		case mult
@@ -54,27 +16,12 @@ public struct Day11: Challenge {
 			}
 		}
 		
-		func process(item: Int64, operand: Operand, factors: [Int64]) -> Int64 {
+		func process(item: Int64, operand: Operand) -> Int64 {
 			switch self {
 			case .add:
 				return item + operand.value(old: item)
 			case .mult:
 				return item * operand.value(old: item)
-			}
-		}
-		
-		func process(item: Worry, operand: Operand) -> Worry {
-			switch self {
-			case .add:
-				switch operand {
-				case let .const(num): return item.add(operand: num)
-				case .ourself: exit(1)
-				}
-			case .mult:
-				switch operand {
-				case let .const(num): return item.mult(operand: num)
-				case .ourself: return item.mult(operand: item)
-				}
 			}
 		}
 	}
@@ -99,7 +46,7 @@ public struct Day11: Challenge {
 		}
 	}
 	
-	struct Monkey {
+	class Monkey {
 		var items: [Int64]
 		let operation: Operator
 		let operand: Operand
@@ -107,96 +54,60 @@ public struct Day11: Challenge {
 		let testTrueToMonkey: Int
 		let testFalseToMonkey: Int
 		
-		mutating func add(item: Int64) {
+		init(items: [Int64], operation: Operator, operand: Operand, testDivisibleBy: Int64, testTrueToMonkey: Int, testFalseToMonkey: Int) {
+			self.items = items
+			self.operation = operation
+			self.operand = operand
+			self.testDivisibleBy = testDivisibleBy
+			self.testTrueToMonkey = testTrueToMonkey
+			self.testFalseToMonkey = testFalseToMonkey
+		}
+		
+		func add(item: Int64) {
 			items.append(item)
 		}
 		
-		mutating func popItem() -> Int64? {
-			if let first = items.first {
-				items = [Int64](items.dropFirst())
-				return first
-			} else {
-				return nil
-			}
+		func popItem() -> Int64? {
+			return items.isEmpty ? nil : items.removeFirst()
 		}
 		
-		mutating func takeTurn(index: Int, monkeys: inout [Monkey]) -> Int64 {
+		func takeTurn(index: Int, monkeys: inout [Monkey]) -> Int64 {
 			let count = Int64(items.count)
 			
 			while var item = popItem() {
 				// Inspect
-				let factors = monkeys.map({ $0.testDivisibleBy })
-				let originalItem = item
-				item = operation.process(item: item, operand: operand, factors: factors)
-				let inspectedItem = item
+				item = operation.process(item: item, operand: operand)
 				
 				// Bored
-//				item = Worry(value: item.value / 3, factors: item.factors, factorsCounts: item.factorsCounts)
 				item = item / 3
-				let boredItem = item
 				
 				// Test
-				var test = false
-				var toMonkey: Int64
 				if item % testDivisibleBy == 0 {
 					monkeys[testTrueToMonkey].add(item: item)
-					test = true
-					toMonkey = item
 				} else {
 					monkeys[testFalseToMonkey].add(item: item)
-					toMonkey = item
 				}
-				
-//				print("""
-//Monkey \(index):
-//  Monkey inspects an item with a worry level of \(originalItem).
-//	Worry level is multiplied by 19 to \(inspectedItem).
-//	Monkey gets bored with item. Worry level is divided by 3 to \(boredItem).
-//	Current worry level is \(test ? "" : "out ")divisible by .
-//	Item with worry level \(boredItem) is thrown to monkey \(toMonkey).
-//
-//""")
 			}
 			
 			return count
 		}
 		
-		mutating func takeTurn2(index: Int, monkeys: inout [Monkey]) -> Int64 {
+		func takeTurn2(index: Int, monkeys: inout [Monkey], factor: Int64) -> Int64 {
 			let count = Int64(items.count)
 			
 			while var item = popItem() {
 				// Inspect
-				let factors = monkeys.map({ $0.testDivisibleBy })
-				let originalItem = item
-				item = operation.process(item: item, operand: operand, factors: factors)
-				let inspectedItem = item
+				item = operation.process(item: item, operand: operand)
 				
 				// Bored
-//				item = item / 3
-				item %= monkeys.map({ $0.testDivisibleBy }).reduce(1, *)
-				let boredItem = item
+				item %= factor
 				
 				// Test
-				var test = false
-				var toMonkey: Int64
 				if item % testDivisibleBy == 0 {
 					monkeys[testTrueToMonkey].add(item: item)
-					test = true
-					toMonkey = item
 				} else {
 					monkeys[testFalseToMonkey].add(item: item)
-					toMonkey = item
 				}
-				
-//				print("""
-//Monkey \(index):
-//  Monkey inspects an item with a worry level of \(originalItem).
-//	Worry level is multiplied by 19 to \(inspectedItem).
-//	Monkey gets bored with item. Worry level is divided by 3 to \(boredItem).
-//	Current worry level is \(test ? "" : "out ")divisible by .
-//	Item with worry level \(boredItem) is thrown to monkey \(toMonkey).
-//
-//""")
 			}
 			
 			return count
@@ -224,13 +135,6 @@ public struct Day11: Challenge {
 							  testFalseToMonkey: falseTo)
 			})
 		return monkeys
-//		let factors = Array(Set(monkeys.map({ $0.testDivisibleBy })))
-//		var factorCounts: [Int64: Int64] = [:]
-//		return monkeys.map { monkey in
-//			var monkey = monkey
-//			monkey.items = monkey.items.map({ Worry(value: $0.value, factors: factors, factorsCounts: factorCounts)})
-//			return monkey
-//		}
 	}
 	
 	public func solvePart1(input: String) -> String {
@@ -238,10 +142,8 @@ public struct Day11: Challenge {
 		var monkeyInspections: [Int64] = .init(repeating: 0, count: monkeys.count)
 		for _ in 0..<20 {
 			for i in 0..<monkeys.count {
-				var monkey = monkeys[i]
-				let inspections = monkey.takeTurn(index: i, monkeys: &monkeys)
+				let inspections = monkeys[i].takeTurn(index: i, monkeys: &monkeys)
 				monkeyInspections[i] += Int64(inspections)
-				monkeys[i] = monkey
 			}
 		}
 		
@@ -250,13 +152,12 @@ public struct Day11: Challenge {
 	
 	public func solvePart2(input: String) -> String {
 		var monkeys = parseMonkeys(input: input)
+		let factor = monkeys.map({ $0.testDivisibleBy }).reduce(1, *)
 		var monkeyInspections: [Int64] = .init(repeating: 0, count: monkeys.count)
-		for round in 0..<10_000 {
+		for _ in 0..<10_000 {
 			for i in 0..<monkeys.count {
-				var monkey = monkeys[i]
-				let inspections = monkey.takeTurn2(index: i, monkeys: &monkeys)
-				monkeyInspections[i] += inspections
-				monkeys[i] = monkey
+				let inspections = monkeys[i].takeTurn2(index: i, monkeys: &monkeys, factor: factor)
+				monkeyInspections[i] += Int64(inspections)
 			}
 		}
 		

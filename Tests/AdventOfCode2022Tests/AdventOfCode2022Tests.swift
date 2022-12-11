@@ -23,7 +23,7 @@ public struct Input {
 		let part2Path = Bundle.module.path(forResource: "Day\(dayId)-Part02", ofType: "txt", inDirectory: "Inputs")
 		
 		guard let example1Path = example1Path, let part1Path = part1Path else {
-			assert(false)
+			exit(1)
 		}
 		
 		inputExample1 = try! String(contentsOfFile: example1Path)
