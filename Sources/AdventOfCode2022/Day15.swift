@@ -87,13 +87,11 @@ public struct Day15: Challenge {
 			}
 			
 			targetYLinePairs.sort(by: { $0.0.x < $1.0.x })
-			var leftX: Int = 0
 			var rightX: Int = 0
 			for (index, (left, right)) in targetYLinePairs.enumerated() {
 				let newLeftX = left.x < 0 ? 0 : left.x
 				let newRightX = right.x > boundingBox ? boundingBox : right.x
 				if index == 0 {
-					leftX = newLeftX
 					rightX = newRightX
 				} else {
 					if newLeftX <= rightX && rightX < newRightX {
