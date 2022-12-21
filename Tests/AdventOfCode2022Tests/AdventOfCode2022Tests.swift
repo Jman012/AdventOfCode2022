@@ -689,7 +689,7 @@ final class Day21Tests: XCTestCase {
 		XCTAssertEqual(day.solvePart2(input: input.inputExample2), "301")
 	}
 	func testPart2Real() throws {
-		XCTAssertEqual(day.solvePart2(input: input.inputPart2), "")
+		XCTAssertEqual(day.solvePart2(input: input.inputPart2), "3887609741189")
 		if doMeasure {
 			measure(metrics: metrics, block: {
 				_ = day.solvePart2(input: input.inputPart2)

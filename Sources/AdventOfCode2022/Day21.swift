@@ -64,10 +64,6 @@ public struct Day21: Challenge {
 		}
 	}
 	
-//	func solve2(left: String, op: Op, right: String, monkeyLookup: inout [String: Monkey]) -> Int64 {
-//		
-//	}
-	
 	public func solvePart1(input: String) -> String {
 		let monkeys = input
 			.split(separator: "\n")
@@ -138,7 +134,7 @@ public struct Day21: Challenge {
 		var monkeyLookup = Dictionary(uniqueKeysWithValues: monkeys)
 		
 		let root = monkeyLookup["root"]!
-		guard case let .op(left, op, right) = root else {
+		guard case let .op(left, _, right) = root else {
 			exit(1)
 		}
 		
@@ -189,37 +185,7 @@ public struct Day21: Challenge {
 			}
 		}
 		
-		/*
-		 while true {
-			 let root = monkeyLookup["root"]!
-			 switch root {
-			 case let .const(result):
-				 return "\(result)"
-			 case let .op(left, op, right):
-				 let resultLeft = trySolve2(monkeyName: left, monkeyLookup: &monkeyLookup)
-				 let resultRight = trySolve2(monkeyName: right, monkeyLookup: &monkeyLookup)
-				 
-				 let resultNilName = resultLeft == nil ? left : right
-				 let resultNilValue = resultLeft == nil ? resultLeft! : resultRight!
-				 let resultConstName = resultLeft == nil ? right : left
-				 let resultConstValue = resultLeft == nil ? resultRight! : resultLeft!
-				 
-				 switch monkeyLookup[resultNilName]! {
-				 case .const: exit(1)
-				 case let .op(left, op, right):
-					 switch op {
-					 case .sum:
-						 monkeyLookup[resultConstName] = .const(resultConstValue - )
-					 case .subtract:
-					 case .multiply:
-					 case .divide:
-					 }
-				 }
-			 }
-		 }
-		 */
-		
-		return ""
+//		return ""
 	}
 	
 }
