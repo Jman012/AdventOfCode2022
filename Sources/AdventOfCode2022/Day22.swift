@@ -163,6 +163,62 @@ public struct Day22: Challenge {
 		}
 	}
 	
+	enum Face {
+		case front
+		case top
+		case left
+		case right
+		case bottom
+		case back
+		
+		func newFace(toThe dir: Direction) -> Face {
+			switch self {
+			case .front:
+				switch dir {
+				case .up: return .top
+				case .down: return .bottom
+				case .left: return .left
+				case .right: return .right
+				}
+			case .top:
+				switch dir {
+				case .up: return .back
+				case .down: return .front
+				case .left: return .left
+				case .right: return .right
+				}
+			case .left:
+				switch dir {
+				case .up: return .top
+				case .down: return .bottom
+				case .left: return .back
+				case .right: return .front
+				}
+			case .right:
+				switch dir {
+				case .up: return .top
+				case .down: return .bottom
+				case .left: return .front
+				case .right: return .back
+				}
+			case .bottom:
+				switch dir {
+				case .up: return .front
+				case .down: return .back
+				case .left: return .left
+				case .right: return .right
+				}
+			case .back:
+				switch dir {
+				case .up: return .bottom
+				case .down: return .top
+				case .left: return .left
+				case .right: return .right
+				}
+			}
+		}
+	}
+	
 	func parseSteps(input: String) -> [Step] {
 		var begin = input.startIndex
 //		var end = input.startIndex
