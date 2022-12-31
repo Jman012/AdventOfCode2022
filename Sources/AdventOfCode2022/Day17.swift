@@ -69,6 +69,12 @@ public struct Day17: Challenge {
 		}
 	}
 	
+	struct Memory: Hashable {
+		let direction: Int
+		let shape: Int
+		let board: [[CellValue]]
+	}
+	
 	func solve(input: String, iterations: Int64) -> Int64 {
 		let directions: [Character] = [Character](input.split(separator: "\n")[0])
 		
@@ -82,13 +88,20 @@ public struct Day17: Challenge {
 		var topMostRowIndex: Int = 0
 		var accumulatedHeight: Int64 = 0
 		
-		for i in 0..<iterations {
-			if i % 500_000 == 0 {
-				print("\(String(format: "%02f", 100.00 * (Double(i) / Double(iterations))))%: \(i) out of \(iterations)")
-			}
-			if currentDirection == 0 && currentShape == 0 {
-				print("reset")
-			}
+		var memories: Set<Memory> = []
+		var firstMemoryHit: Memory?
+		var firstMemoryHitI: Int64 = 0
+		var firstMemoryHitAccumulatedHeight: Int64 = 0
+		
+		var i: Int64 = 0
+		var jumped = false
+		while i < iterations {
+//			if i % 100 == 0 {
+//				print("\(String(format: "%02f", 100.00 * (Double(i) / Double(iterations))))%: \(i) out of \(iterations)")
+//			}
+//			if currentDirection == 0 && currentShape == 0 {
+//				print("reset")
+//			}
 			let shape = Shape.shape(at: currentShape)
 			
 			// Add new rows to perfectly fit 3 empty rows and the height of the shape.
@@ -97,6 +110,31 @@ public struct Day17: Challenge {
 			if newRows > 0 {
 				for _ in 0..<newRows {
 					board.append(blankRow())
+				}
+			}
+			
+			let directionBefore = currentDirection
+			let shapeBefore = currentShape
+			let boardValueBefore: [[CellValue]] = board.dropFirst(min(board.count, max(0, board.count - 20))).map({ $0.map({ $0.value }) })
+			let memory = Memory(direction: directionBefore, shape: shapeBefore, board: boardValueBefore)
+			if !jumped {
+				if firstMemoryHit == nil && memories.contains(memory) {
+//					print("found repeat at \(i)")
+					firstMemoryHit = memory
+					firstMemoryHitI = i
+					firstMemoryHitAccumulatedHeight = accumulatedHeight + Int64(topMostRowIndex)
+				} else if firstMemoryHit != nil && memories.contains(memory) && firstMemoryHit! == memory {
+//					print("memory found again at \(i)")
+					jumped = true
+					
+					let remainingIterations = iterations - i
+					let distanceBetweenMemories = i - firstMemoryHitI
+					let jumps = remainingIterations / distanceBetweenMemories
+					i += jumps * distanceBetweenMemories
+					let heightDiffOfMemories = (accumulatedHeight + Int64(topMostRowIndex)) - firstMemoryHitAccumulatedHeight
+					accumulatedHeight += jumps * heightDiffOfMemories
+				} else {
+					memories.formUnion([memory])
 				}
 			}
 			
@@ -201,6 +239,8 @@ public struct Day17: Challenge {
 					topMostRowIndex = 0
 				}
 			}
+			
+			i += 1
 		}
 		
 		return accumulatedHeight + Int64(topMostRowIndex)

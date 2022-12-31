@@ -581,7 +581,7 @@ final class Day17Tests: XCTestCase {
 		XCTAssertEqual(day.solvePart2(input: input.inputExample2), "1514285714288")
 	}
 	func testPart2Real() throws {
-		XCTAssertEqual(day.solvePart2(input: input.inputPart2), "")
+		XCTAssertEqual(day.solvePart2(input: input.inputPart2), "1561739130391")
 		if doMeasure {
 			measure(metrics: metrics, block: {
 				_ = day.solvePart2(input: input.inputPart2)
