@@ -17,7 +17,7 @@ public struct Input {
 	public init(day: Int) {
 		let dayId = String(format: "%02d", day)
 		
-		let example1Path = Bundle.module.path(forResource: "Day\(dayId)-Example01", ofType: "txt", inDirectory: "Inputs")
+			let example1Path = Bundle.module.path(forResource: "Day\(dayId)-Example01", ofType: "txt", inDirectory: "Inputs")
 		let example2Path = Bundle.module.path(forResource: "Day\(dayId)-Example02", ofType: "txt", inDirectory: "Inputs")
 		let part1Path = Bundle.module.path(forResource: "Day\(dayId)-Part01", ofType: "txt", inDirectory: "Inputs")
 		let part2Path = Bundle.module.path(forResource: "Day\(dayId)-Part02", ofType: "txt", inDirectory: "Inputs")
@@ -605,10 +605,10 @@ final class Day18Tests: XCTestCase {
 		}
 	}
 	func testPart2Example() throws {
-		XCTAssertEqual(day.solvePart2(input: input.inputExample2), "")
+		XCTAssertEqual(day.solvePart2(input: input.inputExample2), "58")
 	}
 	func testPart2Real() throws {
-		XCTAssertEqual(day.solvePart2(input: input.inputPart2), "")
+		XCTAssertEqual(day.solvePart2(input: input.inputPart2), "2652")
 		if doMeasure {
 			measure(metrics: metrics, block: {
 				_ = day.solvePart2(input: input.inputPart2)
