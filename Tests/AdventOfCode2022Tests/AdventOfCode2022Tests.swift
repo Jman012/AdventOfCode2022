@@ -17,7 +17,7 @@ public struct Input {
 	public init(day: Int) {
 		let dayId = String(format: "%02d", day)
 		
-			let example1Path = Bundle.module.path(forResource: "Day\(dayId)-Example01", ofType: "txt", inDirectory: "Inputs")
+		let example1Path = Bundle.module.path(forResource: "Day\(dayId)-Example01", ofType: "txt", inDirectory: "Inputs")
 		let example2Path = Bundle.module.path(forResource: "Day\(dayId)-Example02", ofType: "txt", inDirectory: "Inputs")
 		let part1Path = Bundle.module.path(forResource: "Day\(dayId)-Part01", ofType: "txt", inDirectory: "Inputs")
 		let part2Path = Bundle.module.path(forResource: "Day\(dayId)-Part02", ofType: "txt", inDirectory: "Inputs")
@@ -722,6 +722,18 @@ final class Day22Tests: XCTestCase {
 				_ = day.solvePart2(input: input.inputPart2)
 			})
 		}
+	}
+	
+	func testAnte() throws {
+		let antePath = Bundle.module.path(forResource: "Day22-Ante01", ofType: "txt", inDirectory: "Inputs")
+		guard let antePath = antePath else {
+			exit(1)
+		}
+		let inputAnte1 = try! String(contentsOfFile: antePath)
+		let inputs = inputAnte1.components(separatedBy: "\n\n\n")
+		let scores = inputs.map({ Int(day.solvePart2(input: $0))! })
+		let sum = scores.reduce(0, +)
+		XCTAssertEqual(sum, 2415853)
 	}
 }
 

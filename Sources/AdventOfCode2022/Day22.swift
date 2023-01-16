@@ -440,16 +440,24 @@ public struct Day22: Challenge {
 		let faceLength: Int
 		let boardFacesRows: Int
 		let boardFacesCols: Int
-		if board.count > board[0].count {
-			// Taller than wide
+		let aspectRatio = Double(board.count) / Double(board.first!.count)
+		if aspectRatio == 4.0/3.0 {
 			faceLength = board.count / 4
 			boardFacesRows = 4
 			boardFacesCols = 3
-		} else {
-			// Wider than tall
+		} else if aspectRatio == 3.0/4.0 {
 			faceLength = board.count / 3
 			boardFacesRows = 3
 			boardFacesCols = 4
+		} else if aspectRatio == 5.0/2.0 {
+			faceLength = board.count / 5
+			boardFacesRows = 5
+			boardFacesCols = 2
+		} else {
+			// Assumed: 2:5
+			faceLength = board.count / 2
+			boardFacesRows = 2
+			boardFacesCols = 5
 		}
 		
 		// See which faces are where, and the first found
