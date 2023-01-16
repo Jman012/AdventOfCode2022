@@ -98,7 +98,6 @@ public struct Day19: Challenge {
 		}
 		
 		let constructionCountRange = Set<Int64>(1...2)
-		let threshold = 2
 		var newStates: Set<State> = []
 		for state in states {
 			var newNewStates: [State] = []
