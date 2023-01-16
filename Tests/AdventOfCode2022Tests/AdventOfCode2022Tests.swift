@@ -725,6 +725,7 @@ final class Day22Tests: XCTestCase {
 	}
 	
 	func testAnte() throws {
+		// https://www.reddit.com/r/adventofcode/comments/zuso8x/2022_day_22_part_3/
 		let antePath = Bundle.module.path(forResource: "Day22-Ante01", ofType: "txt", inDirectory: "Inputs")
 		guard let antePath = antePath else {
 			exit(1)
@@ -734,6 +735,12 @@ final class Day22Tests: XCTestCase {
 		let scores = inputs.map({ Int(day.solvePart2(input: $0))! })
 		let sum = scores.reduce(0, +)
 		XCTAssertEqual(sum, 2415853)
+		
+		if doMeasure {
+			measure(metrics: metrics, block: {
+				_ = inputs.map({ Int(day.solvePart2(input: $0))! }).reduce(0, +)
+			})
+		}
 	}
 }
 
@@ -771,7 +778,7 @@ final class Day24Tests: XCTestCase {
 		XCTAssertEqual(day.solvePart1(input: input.inputExample1), "18")
 	}
 	func testPart1Real() throws {
-		XCTAssertEqual(day.solvePart1(input: input.inputPart1), "")
+		XCTAssertEqual(day.solvePart1(input: input.inputPart1), "286")
 		if doMeasure {
 			measure(metrics: metrics, block: {
 				_ = day.solvePart1(input: input.inputPart1)
@@ -779,10 +786,10 @@ final class Day24Tests: XCTestCase {
 		}
 	}
 	func testPart2Example() throws {
-		XCTAssertEqual(day.solvePart2(input: input.inputExample2), "")
+		XCTAssertEqual(day.solvePart2(input: input.inputExample2), "54")
 	}
 	func testPart2Real() throws {
-		XCTAssertEqual(day.solvePart2(input: input.inputPart2), "")
+		XCTAssertEqual(day.solvePart2(input: input.inputPart2), "820")
 		if doMeasure {
 			measure(metrics: metrics, block: {
 				_ = day.solvePart2(input: input.inputPart2)

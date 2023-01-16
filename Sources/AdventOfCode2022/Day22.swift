@@ -110,13 +110,13 @@ public struct Day22: Challenge {
 		}
 		
 		func advancedBy(_ num: Int, facing dir: Direction, in board: [[Cell]]) -> Coord {
-			print("advance by \(num) facing \(dir)")
+//			print("advance by \(num) facing \(dir)")
 			var current = self
-			print("starting at \(current)")
+//			print("starting at \(current)")
 			for _ in 0..<num {
 				let next = current.advancedOne(facing: dir)
 				if !next.is(in: board) {
-					print("next is off the board. backtracking.")
+//					print("next is off the board. backtracking.")
 					// Find next proper cell
 					var nextValidCell = current
 					repeat {
@@ -128,11 +128,11 @@ public struct Day22: Challenge {
 					case .empty:
 						exit(1)
 					case .wall:
-						print("backtrack goes to a wall. ending at \(current)")
+//						print("backtrack goes to a wall. ending at \(current)")
 						return current
 					case .walkable:
 						current = nextValidCell
-						print("backtracked to \(current)")
+//						print("backtracked to \(current)")
 					}
 				} else {
 					let nextCell = board[next.row][next.col]
@@ -140,12 +140,12 @@ public struct Day22: Challenge {
 					switch nextCell {
 					case .walkable:
 						current = next
-						print("next space is walkable. now at \(current)")
+//						print("next space is walkable. now at \(current)")
 					case .wall:
-						print("next space is a wall. ending at \(current)")
+//						print("next space is a wall. ending at \(current)")
 						return current
 					case .empty:
-						print("next is empty space. backtracking.")
+//						print("next is empty space. backtracking.")
 						// Find next proper cell
 						var nextValidCell = current
 						repeat {
@@ -157,11 +157,11 @@ public struct Day22: Challenge {
 						case .empty:
 							exit(1)
 						case .wall:
-							print("backtrack goes to a wall. ending at \(current)")
+//							print("backtrack goes to a wall. ending at \(current)")
 							return current
 						case .walkable:
 							current = nextValidCell
-							print("backtracked to \(current)")
+//							print("backtracked to \(current)")
 						}
 					}
 				}
@@ -236,10 +236,10 @@ public struct Day22: Challenge {
 		}
 		
 		func advancedBy(_ num: Int, facing dir: Direction, in board: [[Cell]], withFaces faces: [[Face?]]) -> (Coord, Direction) {
-			print("advance by \(num) facing \(dir)")
+//			print("advance by \(num) facing \(dir)")
 			var dir = dir
 			var current = self
-			print("starting at \(current)")
+//			print("starting at \(current)")
 			for _ in 0..<num {
 				let (next, newDir) = current.advancedOne(facing: dir, in: board, withFaces: faces)
 				let nextCell = board[next.row][next.col]
@@ -248,9 +248,9 @@ public struct Day22: Challenge {
 				case .walkable:
 					current = next
 					dir = newDir
-					print("next space is walkable. now at \(current) and facing \(dir)")
+//					print("next space is walkable. now at \(current) and facing \(dir)")
 				case .wall:
-					print("next space is a wall. ending at \(current)  and facing \(dir)")
+//					print("next space is a wall. ending at \(current)  and facing \(dir)")
 					return (current, dir)
 				case .empty:
 					// shouldn't reach
@@ -410,17 +410,17 @@ public struct Day22: Challenge {
 			currentCoord = Coord(row: currentCoord.row, col: currentCoord.col + 1)
 		}
 		
-		print("starting at \(currentCoord), \(currentDir)")
+//		print("starting at \(currentCoord), \(currentDir)")
 		
 		for step in steps {
 			switch step {
 			case let .forward(num):
 				currentCoord = currentCoord.advancedBy(num, facing: currentDir, in: board)
 			case .rotateRight:
-				print("rotate right")
+//				print("rotate right")
 				currentDir = currentDir.rotatingRight()
 			case .rotateLeft:
-				print("rotate left")
+//				print("rotate left")
 				currentDir = currentDir.rotatingLeft()
 			}
 		}
@@ -488,17 +488,17 @@ public struct Day22: Challenge {
 			currentCoord = Coord(row: currentCoord.row, col: currentCoord.col + 1)
 		}
 		
-		print("starting at \(currentCoord), \(currentDir)")
+//		print("starting at \(currentCoord), \(currentDir)")
 		
 		for step in steps {
 			switch step {
 			case let .forward(num):
 				(currentCoord, currentDir) = currentCoord.advancedBy(num, facing: currentDir, in: board, withFaces: faces)
 			case .rotateRight:
-				print("rotate right")
+//				print("rotate right")
 				currentDir = currentDir.rotatingRight()
 			case .rotateLeft:
-				print("rotate left")
+//				print("rotate left")
 				currentDir = currentDir.rotatingLeft()
 			}
 		}
